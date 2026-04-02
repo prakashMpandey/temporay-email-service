@@ -13,6 +13,6 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     "clean-db-every-ten-mins": {
         "task": "api.tasks.cleanup_messages",
-        "schedule": 10.0,  # 10 minutes in seconds
+        "schedule": 300,  # 10 minutes in seconds
     }
 }

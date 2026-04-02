@@ -23,7 +23,10 @@ def get_new_email(request):
 @api_view(['POST'])
 def get_all_messages(request):
     if request.method=='POST':
+        
         email=request.data.get('email')
+
+        print("email",email)
 
         if not email:
            return Response({'error':"email not found"},status=status.HTTP_400_BAD_REQUEST)
@@ -31,6 +34,7 @@ def get_all_messages(request):
         mailBox=MailBox.objects.filter(email_id=email).first();
         
         if not mailBox :
+           print(mailBox)
            return Response({'message':"no session exists"},status=status.HTTP_404_NOT_FOUND)
         
 

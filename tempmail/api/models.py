@@ -17,7 +17,7 @@ class MailBox(models.Model):
 
 
 class Message(models.Model):
-    receiver=models.ForeignKey(MailBox,on_delete=models.CASCADE)
+    receiver=models.ForeignKey(MailBox,on_delete=models.CASCADE,related_name='messages')
     sender=models.CharField(max_length=100)
     subject=models.CharField(max_length=200)
     body=models.TextField()

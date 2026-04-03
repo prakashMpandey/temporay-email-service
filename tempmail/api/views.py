@@ -4,10 +4,9 @@ from .utils import create_unique_email
 from rest_framework.response import Response
 from rest_framework import status
 from .models import MailBox,Message
-from .serializers import MessageSerializer
+from .serializers import MessageSerializer,MessageListSerializer
 from django.utils import timezone
-
-
+from rest_framework import generics
 @api_view(['GET'])
 def get_new_email(request):
   email_address=create_unique_email()
@@ -47,20 +46,11 @@ def get_all_messages(request):
         if not messages:
            return Response({'data':[]},status=status.HTTP_200_OK)
         
-        serializer=MessageSerializer(messages,many=True)
+        serializer=MessageListSerializer(messages,many=True)
 
 
         return Response({'data':serializer.data},status=status.HTTP_200_OK)
        
-      #   return Response({'message':'something went wrong'},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-
-
-### expire logic
-
-
-
-
-###  cleanup logic
-
-### create a cron job that will do database cleanup every hour
+class get_message(generics.RetrieveAPIView):
+   queryset=Message.objects.all()
+   serializer_class=MessageSerializer

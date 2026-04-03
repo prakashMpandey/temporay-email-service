@@ -7,67 +7,38 @@ import mailparser
 from asgiref.sync import sync_to_async
 from django.db import transaction
 from django.utils import timezone
+from api.tasks import create_message
 class smtpHandler:
 
      
 
      async def handle_RCPT(self, server, session, envelope, address, rcpt_options):
-        
      #    if not address.endswith('pmpandey.me'):
      #         return '550 not relying with the domain'
 
         receiver = await sync_to_async(self.get_mailbox)(address)
         if not receiver or receiver==None:
             return '550 '
-        envelope.rcpt_tos.append(address)
+        envelope.rcpt_tos.append(receiver.id)
         return '250 OK'
     
 
      async def handle_DATA(self, server, session, envelope):
-        
-        print(server)
-
-        if not envelope or envelope.mail_from:
-             return '550 no mail id found'
+  
+      #   if not envelope or envelope.mail_from:
+      #        print('error ho rha h yaha pe',envelope.mail_from , envelope['mail_from'],envelope.get('mail_from'))
+      #        return '550 no mail id found'
         
         receiver = envelope.rcpt_tos[0]
-
-        if  receiver==None:
-             return '550'
-
-        parsed_mail=mailparser.parse_from_bytes(envelope.content)
-        mail_subject=parsed_mail.mail_partial['subject']
-        mail_body=parsed_mail.mail_partial['body']
-
-        data={
-            'subject':mail_subject,
-            'body':mail_body,
-            'sender':envelope.mail_from,
-            'receiver':receiver
-        }
-              
-        mail=await sync_to_async(self.create_message)(data)
-        
-        print(mail)
-
+        content=envelope.content.decode('utf-8',errors='replace')
+        sender=envelope.mail_from
+        create_message.delay(content,sender,receiver)
         return '250 OK done'
         
 
      def get_mailbox(self, email):
        return MailBox.objects.filter(email_id=email,expires_at__gt=timezone.now()).first()
-     
-     def create_message(self,data):
-      try:
-       with transaction.atomic():
-         new_email=Message.objects.create(receiver=data['receiver'],
-                                sender=data['sender'],
-                                subject=data['subject'],
-                                body=data['body'])
-       return new_email
-      except Exception:
-          return None
-         
-    
+   
 
 
 

@@ -1,7 +1,7 @@
 import logging
 from celery import shared_task
 from django.utils import timezone
-
+from django.db import transaction
 logger = logging.getLogger(__name__)
 
 
@@ -17,3 +17,34 @@ def cleanup_messages():
         logger.info(f'Deleted {count} expired mailboxes')
 
     return f'Cleaned up {count} expired mailboxes'
+
+
+@shared_task
+def create_message(content,sender,receiver):
+    import mailparser
+    from .models import MailBox,Message
+    
+    parsed_mail=mailparser.parse_from_string(content)
+    mail_subject=parsed_mail.mail_partial.get('subject','no subject')
+    mail_body=parsed_mail.mail_partial.get('body','no body')
+
+    receiver=MailBox.objects.get(pk=receiver)
+    
+    data={
+            'subject':mail_subject,
+            'body':mail_body,
+            'sender':sender,
+            'receiver':receiver
+        }
+    try:
+       with transaction.atomic():
+         message= Message.objects.create(
+                                 receiver=data['receiver'],
+                                sender=data['sender'],
+                                subject=data['subject'],
+                                body=data['body'])
+         
+         return 'message received '
+    except Exception as e:
+          print(e)
+          return None

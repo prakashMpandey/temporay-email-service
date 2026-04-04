@@ -1,0 +1,37 @@
+# Git
+.git
+.gitignore
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.tox/
+.coverage
+htmlcov/
+
+# Local environment & secrets
+.env
+.venv
+env/
+venv/
+ENV/
+*.swp
+*.bak
+
+# Django specific
+db.sqlite3
+media/
+static/
+staticfiles/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Misc
+.DS_Store
+.vscode/
+.idea/

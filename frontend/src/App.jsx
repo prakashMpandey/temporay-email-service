@@ -44,7 +44,7 @@ function App() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-indigo-50 to-purple-100 p-6 md:p-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-indigo-50 to-purple-100 p-4 sm:p-6 md:p-10">
       <div className="max-w-2xl mx-auto">
         <InputBox
           currentUrl={email}
@@ -53,19 +53,19 @@ function App() {
 
         {loading && (
           <div className="text-center py-4 mb-4">
-            <div className="inline-flex items-center gap-3 bg-white px-6 py-3 rounded-full shadow-lg">
-              <div className="w-5 h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-              <span className="text-gray-600 font-medium">Generating email...</span>
+            <div className="inline-flex items-center gap-2 sm:gap-3 bg-white px-4 sm:px-6 py-2 sm:py-3 rounded-full shadow-lg">
+              <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+              <span className="text-gray-600 font-medium text-sm sm:text-base">Generating email...</span>
             </div>
           </div>
         )}
 
         {error && (
-          <div className="bg-white border border-red-100 text-red-500 p-4 rounded-2xl mb-4 text-center shadow-lg flex items-center justify-center gap-2">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="bg-white border border-red-100 text-red-500 p-3 sm:p-4 rounded-2xl mb-4 text-center shadow-lg flex items-center justify-center gap-2 text-sm sm:text-base">
+            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            {error}
+            <span>{error}</span>
           </div>
         )}
 

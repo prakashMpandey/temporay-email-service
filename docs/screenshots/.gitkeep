@@ -1,0 +1,10 @@
+# Screenshots Directory
+
+Place your application screenshots in this directory:
+
+- `home.png` - Home page showing email generation
+- `inbox.png` - Inbox view with message list
+- `email-detail.png` - Detailed email message view
+- `mobile.png` - Mobile responsive view
+
+Recommended screenshot dimensions: 1920x1080 or 1280x720

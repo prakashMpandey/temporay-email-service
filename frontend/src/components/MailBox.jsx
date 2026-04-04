@@ -1,7 +1,23 @@
 import { useState, useEffect, useCallback } from 'react'
 import EmailDetail from './EmailDetail'
+import config from '../config'
 
 const POLL_INTERVAL = 5000
+
+// Helper function to strip HTML and decode entities for preview
+const getTextPreview = (html, maxLength = 100) => {
+  if (!html) return 'No preview available'
+
+  // Create a temporary DOM element to parse HTML
+  const temp = document.createElement('div')
+  temp.innerHTML = html
+
+  // Get text content (automatically handles entities and nested tags)
+  const text = temp.textContent || temp.innerText || ''
+
+  // Trim and limit length
+  return text.trim().slice(0, maxLength) || 'No preview available'
+}
 
 export default function MailBox({ email, onExpired }) {
   const [mails, setMails] = useState([])
@@ -19,7 +35,7 @@ export default function MailBox({ email, onExpired }) {
       const formData = new FormData()
       formData.append('email', email)
 
-      const response = await fetch('http://localhost:8000/api/messages/', {
+      const response = await fetch(`${config.apiUrl}/api/messages/`, {
         method: 'POST',
         body: formData,
       })
@@ -108,7 +124,7 @@ export default function MailBox({ email, onExpired }) {
           </div>
         )}
 
-        <div className="p-6 max-h-[112.5] overflow-y-auto">
+        <div className="p-6 max-h-[450px] overflow-y-auto">
           {mails.length === 0 ? (
             <div className="text-center py-16">
               <div className="w-16 h-16 mx-auto mb-4 bg-gray-50 rounded-2xl flex items-center justify-center">
@@ -143,10 +159,7 @@ export default function MailBox({ email, onExpired }) {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                     </svg>
                   </div>
-                  <p className="text-gray-600 font-medium mt-2 ml-13 truncate">{mail.subject || '(No Subject)'}</p>
-                  <p className="text-gray-400 text-sm mt-1 ml-13 line-clamp-1">
-                    {mail.body?.replace(/<[^>]*>/g, '').slice(0, 100) || 'No preview available'}
-                  </p>
+                 
                 </div>
               ))}
             </div>

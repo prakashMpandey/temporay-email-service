@@ -7,7 +7,7 @@ from datetime import timedelta
 class MailBox(models.Model):
     email_id=models.EmailField(unique=True)
     created_at=models.DateTimeField(auto_now_add=True)
-    expires_at=models.DateTimeField()
+    expires_at=models.DateTimeField(db_index=True)
 
     def save(self, *args,**kwargs):
         if not self.expires_at:

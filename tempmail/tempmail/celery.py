@@ -11,8 +11,8 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 
 app.conf.beat_schedule = {
-    "clean-db-every-ten-mins": {
+    "clean-db-every-5-mins": {
         "task": "api.tasks.cleanup_messages",
-        "schedule": 300,  # 10 minutes in seconds
+        "schedule": 300,  # 5 minutes in seconds
     }
 }

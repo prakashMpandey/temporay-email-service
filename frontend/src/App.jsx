@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import InputBox from './components/InputBox.jsx'
 import MailBox from './components/MailBox.jsx'
+import config from './config'
 
 function App() {
   const [email, setEmail] = useState(() => localStorage.getItem('currentEmail') || '')
@@ -13,7 +14,7 @@ function App() {
     setError(null)
 
     try {
-      const response = await fetch('http://localhost:8000/api/new/')
+      const response = await fetch(`${config.apiUrl}/api/new/`)
 
       if (!response.ok) {
         throw new Error('Failed to generate email')
@@ -35,8 +36,6 @@ function App() {
     setError('Your email has expired. Generate a new one.')
   }
 
-  const handleCopy = () => {}
-
   useEffect(() => {
     const savedEmail = localStorage.getItem('currentEmail')
     if (savedEmail) {
@@ -50,7 +49,6 @@ function App() {
         <InputBox
           currentUrl={email}
           onGenerate={fetchNewEmail}
-          onCopy={handleCopy}
         />
 
         {loading && (

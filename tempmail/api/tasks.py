@@ -28,7 +28,10 @@ def create_message(content,sender,receiver):
     mail_subject=parsed_mail.mail_partial.get('subject','no subject')
     mail_body=parsed_mail.mail_partial.get('body','no body')
 
-    receiver=MailBox.objects.get(pk=receiver)
+    receiver=MailBox.objects.filter(pk=receiver).first()
+
+    if not receiver :
+        return None;
     
     data={
             'subject':mail_subject,
@@ -46,5 +49,5 @@ def create_message(content,sender,receiver):
          
          return 'message received '
     except Exception as e:
-          print(e)
+          logger.error(f"exception occured {e}")
           return None

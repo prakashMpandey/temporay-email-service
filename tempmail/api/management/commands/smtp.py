@@ -48,7 +48,7 @@ class smtpHandler:
      def get_mailbox(self, email):
        try:
          mailbox= MailBox.objects.filter(email_id=email,expires_at__gt=timezone.now()).first()
-
+         logger.info(f"new mailbox made {mailbox}")
          return mailbox
        except Exception as e:
            logger.error('mailbox does not exists')
@@ -58,7 +58,7 @@ class smtpHandler:
 class Command(BaseCommand):
     
      def handle(self,*args,**kwargs):
-       controller=Controller(smtpHandler(),hostname=os.getenv('SMTP_SERVER_HOST'),port=os.getenv('SMTP_SERVER_PORT'))
+       controller=Controller(smtpHandler(),ident=os.getenv('SMTP_SERVER_IDENTITY'),hostname=os.getenv('SMTP_SERVER_HOST'),port=os.getenv('SMTP_SERVER_PORT'))
        controller.start()
        logger.info('smtp server started')
        try:

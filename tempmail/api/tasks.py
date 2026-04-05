@@ -47,6 +47,8 @@ def create_message(content,sender,receiver):
                                 subject=data['subject'],
                                 body=data['body'])
          
+        
+         logger.info(f"new message received for {data['receiver']}")
          return 'message received '
     except Exception as e:
           logger.error(f"exception occured {e}")

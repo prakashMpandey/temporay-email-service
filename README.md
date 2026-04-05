@@ -177,20 +177,8 @@ VITE_API_BASE_URL=http://localhost:8000/api
 ## Screenshots
 
 ### Home Page
-![Home Page](docs/screenshots/home.png)
+![Home Page](/screenshots/home.png)
 *Email generation interface*
-
-### Inbox View
-![Inbox View](docs/screenshots/inbox.png)
-*Message list with sender and subject*
-
-### Email Details
-![Email Viewer](docs/screenshots/email-detail.png)
-*Full email content viewer*
-
-### Mobile View
-![Mobile View](docs/screenshots/mobile.png)
-*Responsive mobile design*
 
 ---
 
